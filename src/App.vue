@@ -27,7 +27,7 @@ export default {
   },
   methods:{
     getProInfo () { //-> 取数据
-          this.$http.get('/api/seller').then(
+          this.$http.get('/api/seller?='+Math.random()).then(
               (res) => {  
                   this.leftNavMsg = res.body.data;
               }

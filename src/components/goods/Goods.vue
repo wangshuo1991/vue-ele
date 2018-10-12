@@ -46,6 +46,11 @@
                                     <span class="now">￥{{food.price}}</span>
                                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
+
+                                <!-- 这里是加减组件 -->
+                                <div class="cartcontroll-wrapper">
+                                    <cart-controll :food="food"></cart-controll>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -60,10 +65,12 @@
 
 import BScroll from 'better-scroll';
 import ShopCar from '../shopCar/ShopCar'
+import CartControll from '../cartcontroll/CartControll'
 
 export default {
   components:{
-    ShopCar
+    ShopCar,
+    CartControll
   },
   props:{
       seller: {
@@ -80,7 +87,7 @@ export default {
   created () {
       this.classMap = ['decrease','guarantee','invoice','special','discount'];
 
-      this.$http.get("/api/goods").then((res) => {
+      this.$http.get("/api/goods?=" + Math.random()).then((res) => {
           res = res.body;
           this.goods = res.data;
           /*异步更新 dom没有变化 高度初始化会有问题 要用 nextTick */
@@ -141,6 +148,9 @@ export default {
           }
           return 0;
       }
+  },
+  updated(){
+    //console.log(`goods: -- ${JSON.stringify(this.goods)}`);  
   }
 }
 </script>
@@ -158,6 +168,8 @@ export default {
         bottom: 46px;
         display: flex;
         overflow: hidden;
+
+
 
         .left-menu {
             flex: 0 0 80px;
@@ -238,6 +250,7 @@ export default {
 
                 .content {
                     flex: 1;
+                    position: relative;
 
                     .name {
                         margin: 2px 0 8px 0;
@@ -276,6 +289,12 @@ export default {
                             color: #ccc;
                             font-style: line-through;
                         }
+                    }
+
+                    .cartcontroll-wrapper {
+                        position: absolute;
+                        bottom: 0;
+                        right: 10px;
                     }
                     
                 }

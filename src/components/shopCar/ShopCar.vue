@@ -3,15 +3,17 @@
       <div class="content">
           <div class="content-left">
               <div class="car-logo-wrapper">
-                  <div class="car-logo">
-                    
+                  <div class="car-logo" :class="{'hasFood': totalCount>0}">
+                    <div class="food-count" v-show="totalCount>0">{{totalCount}}</div>
                   </div>
               </div>
-              <div class="price">￥0</div>
+              <div class="price">￥{{totalPrice}}</div>
               <div class="desc">配送费{{deliveryPrice}}元</div>
           </div>
-          <div class="content-right">
-            ￥{{minPrice}}起送
+          <div class="content-right" :class="{'gotopay': minPrice<totalPrice}">
+            <span v-if="totalPrice===0">￥{{minPrice}}起送</span>
+            <span v-else-if="minPrice>totalPrice">￥{{minPrice-totalPrice}}起送</span>
+            <span v-else>立即结算</span>
           </div>
       </div>
   </div>
@@ -26,6 +28,21 @@ export default {
       },
       minPrice: {
           type: Number
+      },
+      selectFoods: { /* 在 goods 页面选中的商品 放在这个数组中 */
+          type: Array,
+          default () {
+              return [
+                  {
+                      price: 10.8,
+                      count: 2
+                  },
+                  {
+                      price: 12.5,
+                      count: 3
+                  }
+              ];
+          }
       }
   },
   data(){
@@ -34,7 +51,22 @@ export default {
     }
   },
   watch:{},
-  computed:{},
+  computed:{
+      totalPrice () {
+          let total = 0;
+          this.selectFoods.forEach((food) => {
+            total += food.price * food.count;
+          });  
+          return total;
+      },
+      totalCount () {
+          let count = 0;
+          this.selectFoods.forEach((food) => {
+            count += food.count;
+          });
+          return count<99?count:99;
+      }
+  },
   methods:{},
   created(){},
   mounted(){}
@@ -75,6 +107,25 @@ export default {
                         height: 100%;
                         border-radius: 50%;
                         background: #2b343c;
+                        position: relative;
+
+                        .food-count {
+                            position: absolute;
+                            width: 24px;
+                            height: 16px;
+                            background: red;
+                            color: #fff;
+                            font-size: 12px;
+                            line-height: 16px;
+                            text-align: center;
+                            border-radius: 16px;
+                            right: -5px;
+                            top: -5px;
+                        }
+                    }
+
+                    .hasFood {
+                        background: #3B99FF;
                     }
                 }
 
@@ -109,6 +160,11 @@ export default {
                 text-align: center;
                 line-height: 48px;
                 background: #2b333b;
+            }
+
+            .gotopay {
+                background: #2BA245;
+                color: #fff;
             }
         }
     }
