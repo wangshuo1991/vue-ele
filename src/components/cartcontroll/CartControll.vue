@@ -24,9 +24,7 @@ export default {
     }
   },
   watch:{
-    food: (newval,oldval) => {
-      console.log(`food变化了`);
-    }
+    
   },
   computed:{},
   methods:{
@@ -40,7 +38,7 @@ export default {
         this.food.count++;
       }
 
-      console.log(this.food.count);
+      
       
     },
     decreaseNum(event){

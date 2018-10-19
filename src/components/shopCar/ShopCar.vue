@@ -32,16 +32,7 @@ export default {
       selectFoods: { /* 在 goods 页面选中的商品 放在这个数组中 */
           type: Array,
           default () {
-              return [
-                  {
-                      price: 10.8,
-                      count: 2
-                  },
-                  {
-                      price: 12.5,
-                      count: 3
-                  }
-              ];
+              return [];
           }
       }
   },

@@ -57,7 +57,10 @@
                </li>
            </ul>
        </div>
-       <shop-car :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop-car>
+       <shop-car 
+       :deliveryPrice="seller.deliveryPrice" 
+       :minPrice="seller.minPrice"
+       :selectFoods="selectFoods"></shop-car>
     </div>
 </template>
 
@@ -147,10 +150,19 @@ export default {
               }
           }
           return 0;
+      },
+      selectFoods () {
+          let foods = [];
+          this.goods.forEach((good) => {
+              good.foods.forEach((food) => {
+                  if (food.count) {
+                      foods.push(food);
+                  }
+              })
+          });
+
+          return foods;
       }
-  },
-  updated(){
-    //console.log(`goods: -- ${JSON.stringify(this.goods)}`);  
   }
 }
 </script>
