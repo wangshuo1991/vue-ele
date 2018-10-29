@@ -31,7 +31,8 @@
                         <li 
                         class="food-item"
                         v-for="(food,i) in item.foods" 
-                        :key="i">
+                        :key="i"
+                        @click="selectFood(food,$event)">
                             <div class="icon">
                                 <img width="57" height="57" :src="food.icon" alt="">
                             </div>
@@ -61,7 +62,11 @@
        :deliveryPrice="seller.deliveryPrice" 
        :minPrice="seller.minPrice"
        :selectFoods="selectFoods"></shop-car>
+
+       <food :food="selectedFood" ref="food"></food>
     </div>
+
+    
 </template>
 
 <script>
@@ -69,11 +74,13 @@
 import BScroll from 'better-scroll';
 import ShopCar from '../shopCar/ShopCar'
 import CartControll from '../cartcontroll/CartControll'
+import Food from '../food/Food'
 
 export default {
   components:{
     ShopCar,
-    CartControll
+    CartControll,
+    Food
   },
   props:{
       seller: {
@@ -85,6 +92,7 @@ export default {
           goods: [],
           height_ary: [],
           scrollY: 0,
+          selectedFood: {}
       }
   },
   created () {
@@ -137,7 +145,14 @@ export default {
         let blocks = this.$refs.foodContent.getElementsByClassName("good-hook");
         let el = blocks[i];
         this.foodScroll.scrollToElement(el, 300);
-      }
+      },
+      selectFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs.food.show();
+      },
   },
   computed: {
       currentIndex () {
